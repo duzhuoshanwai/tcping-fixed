@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    Use tcp ping host, just like ping comppand , forked form hengxiaowai/tcping
+    Use tcp ping host, just like ping command , forked form hengxiaowai/tcping
 """
 
 import socket
@@ -25,7 +25,7 @@ Statistics = namedtuple(
         "host",
         "resolvedIP",
         "port",
-        "successed",
+        "succeeded",
         "failed",
         "success_rate",
         "minimum",
@@ -72,13 +72,13 @@ class Print(object):
     def raw(self):
         statistics_group = []
         for row in self.rows:
-            total = row.successed + row.failed
+            total = row.succeeded + row.failed
             statistics_header = "\n--- {}({})[:{}] tcping statistics ---".format(
                 row.host, row.resolvedIP, row.port
             )
             statistics_body = (
-                "\n{} connections, {} successed, {} failed, {} success rate".format(
-                    total, row.successed, row.failed, row.success_rate
+                "\n{} connections, {} succeeded, {} failed, {} success rate".format(
+                    total, row.succeeded, row.failed, row.success_rate
                 )
             )
             statistics_footer = "\nminimum = {}, maximum = {}, average = {}".format(
@@ -134,7 +134,7 @@ class Ping(object):
     def __init__(self, host, host_type, port=80, timeout=1):
         self.print_ = Print()
         self.timer = Timer()
-        self._successed = 0
+        self._succeeded = 0
         self._failed = 0
         self._conn_times = []
         self._host = host
@@ -147,7 +147,7 @@ class Ping(object):
                 "Host",
                 "Resolved IP",
                 "Port",
-                "Successed",
+                "Succeeded",
                 "Failed",
                 "Success Rate",
                 "Minimum",
@@ -176,9 +176,9 @@ class Ping(object):
         return Socket(family, type_, self._timeout)
 
     def _success_rate(self):
-        count = self._successed + self._failed
+        count = self._succeeded + self._failed
         try:
-            rate = (float(self._successed) / count) * 100
+            rate = (float(self._succeeded) / count) * 100
             rate = "{0:.2f}".format(rate)
         except ZeroDivisionError:
             rate = "0.00"
@@ -201,7 +201,7 @@ class Ping(object):
                 self._host,
                 self._resolved_ip,
                 self._port,
-                self._successed,
+                self._succeeded,
                 self._failed,
                 success_rate,
                 minimum,
@@ -216,7 +216,7 @@ class Ping(object):
 
     @property
     def status(self):
-        return self._successed == 0
+        return self._succeeded == 0
 
     def ping(self, count=10, ipv6=False):
         for n in range(1, count + 1):
@@ -249,7 +249,7 @@ class Ping(object):
                 raise KeyboardInterrupt()
 
             else:
-                self._successed += 1
+                self._succeeded += 1
 
             finally:
                 s.close()
