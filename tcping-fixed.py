@@ -243,7 +243,13 @@ class Ping(object):
                     )
                 )
                 self._failed += 1
-
+            except ConnectionRefusedError:
+                iprint(
+                    "Connected to {} ({}:{}): tcp_seq={} time out!".format(
+                        self._host, self._resolved_ip, self._port, n
+                    )
+                )
+                self._failed += 1
             except KeyboardInterrupt:
                 self.statistics(n - 1)
                 raise KeyboardInterrupt()
